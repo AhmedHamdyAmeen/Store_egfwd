@@ -21,10 +21,10 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": 2, // 2 means error, 1 means warning
+        // "prettier/prettier": 2, // 2 means error, 1 means warning
         // "semi": ["error", "never"],
-        "quotes": ["error", "double"],
-        // "no-console": 1,
+        // "quotes": ["error", "double"],
+        "no-console": 0,
         "no-var": "error",
         "prefer-const": "error"
     }
