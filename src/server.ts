@@ -1,12 +1,12 @@
-// import dotenv from "dotenv";
-// dotenv.config();
-import {} from "dotenv/config";
 import express, { Application, Request, Response } from "express";
+import Error from "./MVC/Interfaces/error";
+
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+import { PORT } from "./config";
 import routes from "./MVC/Routes/routes";
 
 /**----------------------**
@@ -14,7 +14,7 @@ import routes from "./MVC/Routes/routes";
  */
 const app: Application = express();
 
-const port = process.env.PORT || 8080;
+const port = PORT || 8080;
 app.listen(port, () => {
   console.log(`Server listening on: http://localhost:${port}`);
 });
@@ -58,7 +58,8 @@ app.use((req: Request, res: Response) => {
  */
 app.use((err: Error, req: Request, res: Response) => {
   console.log(`Error MW: \n`);
-  res.status(500).json({ msg: `${err}` });
+  const status = err.status || 500;
+  res.status(status).json({ msg: `${err}` });
 });
 
 export default app;
