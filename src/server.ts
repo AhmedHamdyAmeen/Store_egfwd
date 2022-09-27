@@ -18,19 +18,6 @@ const app: Application = express();
 
 const port = PORT || 8080;
 
-db.connect().then((client) => {
-  return client
-    .query("SELECT NOW()")
-    .then((res) => {
-      client.release();
-      console.log(res.rows);
-    })
-    .catch((err) => {
-      client.release();
-      console.log(err.stack);
-    });
-});
-
 app.listen(port, () => {
   console.log(`Server listening on: http://localhost:${port}`);
 });
@@ -46,6 +33,20 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: "Too many request to this IP, please try again after 1 minute! 😥🤷‍♀️",
 });
+
+// Test DB
+// db.connect().then((client) => {
+//   return client
+//     .query("SELECT NOW()")
+//     .then((res) => {
+//       client.release();
+//       console.log(res.rows);
+//     })
+//     .catch((err) => {
+//       client.release();
+//       console.log(err.stack);
+//     });
+// });
 
 /**-----------------------**
  *  Endpoints

@@ -13,7 +13,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:f": "eslint src/**/*.ts --fix",
     "dotenv": "npx tsc && nodemon --require dotenv/config dist/server.js --exec babel-register",
-    "test": "tsc && jasmine"
+    "test": "tsc && jasmine",
+    "migration:run": "db-migrate up"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -43,6 +44,8 @@
     "express": "^4.18.1",
     "express-rate-limit": "^6.6.0",
     "helmet": "^6.0.0",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "pg": "^8.8.0"
   }
 }
