@@ -7,7 +7,9 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import { PORT } from "./config";
+import db from "./database/database";
 import routes from "./MVC/Routes/routes";
+import { Client } from "pg";
 
 /**----------------------**
  * Initiate Express Server
@@ -15,6 +17,20 @@ import routes from "./MVC/Routes/routes";
 const app: Application = express();
 
 const port = PORT || 8080;
+
+db.connect().then((client) => {
+  return client
+    .query("SELECT NOW()")
+    .then((res) => {
+      client.release();
+      console.log(res.rows);
+    })
+    .catch((err) => {
+      client.release();
+      console.log(err.stack);
+    });
+});
+
 app.listen(port, () => {
   console.log(`Server listening on: http://localhost:${port}`);
 });
