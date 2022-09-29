@@ -7,9 +7,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import { PORT } from "./config";
-import db from "./database/database";
 import routes from "./MVC/Routes/routes";
-import { Client } from "pg";
 
 /**----------------------**
  * Initiate Express Server
@@ -28,7 +26,7 @@ app.listen(port, () => {
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 3, // Limit each IP
+  max: 10, // Limit each IP
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: "Too many request to this IP, please try again after 1 minute! 😥🤷‍♀️",

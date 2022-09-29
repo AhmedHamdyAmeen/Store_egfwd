@@ -1,11 +1,13 @@
 import { Router, Request, Response } from "express";
-import test_route from "./api/test.route";
+
+import test_route from "./api/test.routes";
+import users_route from "./api/users.routes";
 
 const routes = Router();
 
 /** All Routes
  */
-routes.get("/", (req: Request, res: Response) => {
+routes.get("/", (_req: Request, res: Response) => {
   return res.status(200).send(`
   <div>
     <h1>Welcome Ya Man 💪😉</h1>
@@ -20,5 +22,6 @@ routes.post("/", (req: Request, res: Response) => {
 });
 
 routes.use(test_route);
+routes.use(users_route);
 
 export default routes;
