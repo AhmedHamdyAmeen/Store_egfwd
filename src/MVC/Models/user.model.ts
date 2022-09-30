@@ -1,6 +1,6 @@
 import db from "../../database/database";
 import User from "./../../types/user.types";
-import { hashPassword } from "../Helpers/hashPassword";
+import { hashPassword, comparePasswords } from "../Helpers/hashPassword";
 
 class UserModel {
   // Create User
@@ -104,6 +104,34 @@ class UserModel {
   }
 
   // Authenticate user
+  async authenticate(email: string, password: string): Promise<User | null> {
+    try {
+      const connection = await db.connect();
+      const sql = "SELECT password FROM users WHERE email=$1";
+      const result = await connection.query(sql, [email]);
+
+      // if the user found in the database
+      if (result.rows.length) {
+        const { password: hashedPassword } = result.rows[0];
+        // console.log("hashedPassword: ", hashedPassword);
+        // console.log("result.rows[0]: ", result.rows[0]);
+
+        const isPasswordValid = comparePasswords(password, hashedPassword);
+
+        if (isPasswordValid) {
+          const userSql = `SELECT id, email, user_name, first_name, last_name FROM users WHERE email=($1)`;
+          const userInfo = await connection.query(userSql, [email]);
+          return userInfo.rows[0];
+        }
+      }
+
+      // if the user isn't found in the database
+      connection.release();
+      return null;
+    } catch (error) {
+      throw new Error(` ${(error as Error).message}`);
+    }
+  }
 }
 
 export default UserModel;

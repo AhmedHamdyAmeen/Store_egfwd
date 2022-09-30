@@ -13,6 +13,7 @@ const {
   POSTGRES_PASSWORD,
   BCRYPT_PASSWORD,
   BCRYPT_SALT,
+  JWT_SECRET_TOKEN,
 } = process.env;
 
 /** Select the appropriate DB base on the type NODE_ENV
@@ -31,4 +32,5 @@ export {
   DATABASE,
   BCRYPT_PASSWORD,
   BCRYPT_SALT,
+  JWT_SECRET_TOKEN,
 };

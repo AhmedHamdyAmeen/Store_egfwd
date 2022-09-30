@@ -6,6 +6,7 @@ import {
   getOne,
   updateOne,
   deleteOne,
+  authenticate
 } from "../../Controllers/users.controllers";
 
 const users_route = Router();
@@ -15,5 +16,7 @@ const users_route = Router();
 users_route.route("/db").post(createUser).get(getMany).patch(updateOne);
 
 users_route.route("/db/:id").get(getOne).delete(deleteOne);
+
+users_route.route("/authenticate").post(authenticate);
 
 export default users_route;

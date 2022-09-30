@@ -1,4 +1,7 @@
 import { Response, Request, NextFunction } from "express";
+import * as jwt from "jsonwebtoken";
+
+import { JWT_SECRET_TOKEN } from "../../config";
 
 /** Models:
  */
@@ -68,4 +71,35 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { createUser, getMany, getOne, updateOne, deleteOne };
+const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await userModel.authenticate(email, password);
+    if (!user) {
+      return res.status(401).json({
+        status: "error",
+        msg: "The User name and Password don't match, please try agin",
+      });
+    }
+
+    // Generate Token
+    const token = jwt.sign({ user }, JWT_SECRET_TOKEN as unknown as string);
+    return res
+      .status(200)
+      .json({
+        status: "success",
+        data: { ...user },
+        token,
+        msg: "User authenticated successfully",
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createUser, getMany, getOne, updateOne, deleteOne, authenticate };
