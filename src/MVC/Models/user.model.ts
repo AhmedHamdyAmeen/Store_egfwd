@@ -1,5 +1,6 @@
 import db from "../../database/database";
 import User from "./../../types/user.types";
+import { hashPassword } from "../Helpers/hashPassword";
 
 class UserModel {
   // Create User
@@ -16,7 +17,7 @@ class UserModel {
         u.user_name,
         u.first_name,
         u.last_name,
-        u.password,
+        hashPassword(u.password as string),
       ]);
 
       // Release connection
@@ -72,7 +73,7 @@ class UserModel {
         u.user_name,
         u.first_name,
         u.last_name,
-        u.password,
+        hashPassword(u.password as string),
         u.id,
       ]);
 

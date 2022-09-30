@@ -11,6 +11,8 @@ const {
   POSTGRES_DB_test,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
+  BCRYPT_PASSWORD,
+  BCRYPT_SALT,
 } = process.env;
 
 /** Select the appropriate DB base on the type NODE_ENV
@@ -27,4 +29,6 @@ export {
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   DATABASE,
+  BCRYPT_PASSWORD,
+  BCRYPT_SALT,
 };
