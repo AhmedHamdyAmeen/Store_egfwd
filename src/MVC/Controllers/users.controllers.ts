@@ -88,15 +88,15 @@ const authenticate = async (
     }
 
     // Generate Token
-    const token = jwt.sign({ user }, JWT_SECRET_TOKEN as unknown as string);
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        data: { ...user },
-        token,
-        msg: "User authenticated successfully",
-      });
+    const token = jwt.sign({ user }, JWT_SECRET_TOKEN as unknown as string, {
+      expiresIn: "1h",
+    });
+    return res.status(200).json({
+      status: "success",
+      data: { ...user },
+      token,
+      msg: "User authenticated successfully",
+    });
   } catch (error) {
     next(error);
   }

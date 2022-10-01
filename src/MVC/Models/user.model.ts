@@ -113,14 +113,14 @@ class UserModel {
       // if the user found in the database
       if (result.rows.length) {
         const { password: hashedPassword } = result.rows[0];
-        // console.log("hashedPassword: ", hashedPassword);
-        // console.log("result.rows[0]: ", result.rows[0]);
 
         const isPasswordValid = comparePasswords(password, hashedPassword);
 
         if (isPasswordValid) {
           const userSql = `SELECT id, email, user_name, first_name, last_name FROM users WHERE email=($1)`;
           const userInfo = await connection.query(userSql, [email]);
+          connection.release();
+
           return userInfo.rows[0];
         }
       }
