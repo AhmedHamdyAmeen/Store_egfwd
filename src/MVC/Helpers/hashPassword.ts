@@ -33,3 +33,14 @@ const comparePasswords = (
 };
 
 export { hashPassword, comparePasswords };
+
+/***
+ *
+ *  jwt.sign() ==> create token create token create token
+ *    jwt.verify() ==> check the token..
+ *
+ *
+ *
+ */
+
+

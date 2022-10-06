@@ -12,6 +12,6 @@ describe("Test the test_endpoint server", () => {
   it("Get / endpoint", async () => {
     const response = await request.get("/");
 
-    expect(response.status).toBe(200); 
+    expect(response.status).toBe(200);
   });
 });
