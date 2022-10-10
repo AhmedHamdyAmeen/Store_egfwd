@@ -59,7 +59,7 @@ app.use(limiter);
 app.use(helmet()); // to Securing http requests
 app.use(morgan("dev"));
 app.use(cors());
-app.use(routes);
+app.use("/api", routes);
 
 /** Not found MW
  */
