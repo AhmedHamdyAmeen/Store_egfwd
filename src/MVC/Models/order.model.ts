@@ -19,7 +19,7 @@ class OrderModel {
     }
   }
   // Get Specific Order
-  async getOne(id: string): Promise<Order> {
+  async getOrder(id: string): Promise<Order> {
     try {
       const sql = `SELECT * FROM orders WHERE id=($1)`;
       const result = await queryingDB(sql, [id]);

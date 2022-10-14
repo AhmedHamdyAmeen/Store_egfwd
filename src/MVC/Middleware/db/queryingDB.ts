@@ -4,7 +4,7 @@ import db from "../../../database/database";
 const queryingDB = async (sql: string, params?: any[]) => {
   try {
     const connection = await db.connect();
-    /** If there is array of params send
+    /** If there is array of params sent
      */
     if (params) {
       const result = await connection.query(sql, params);
@@ -13,6 +13,8 @@ const queryingDB = async (sql: string, params?: any[]) => {
       return result;
     }
 
+    /** If there is no array of params sent
+     */
     const result = await connection.query(sql);
     connection.release();
 
