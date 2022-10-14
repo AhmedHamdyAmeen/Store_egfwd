@@ -50,7 +50,7 @@ class UserModel {
   async getOne(id: string): Promise<User> {
     try {
       const connection = await db.connect();
-      const sql = `SELECT id, email, user_name, first_name, last_name FROM users WHERE iD=($1)`;
+      const sql = `SELECT id, email, user_name, first_name, last_name FROM users WHERE id=($1)`;
       const result = await connection.query(sql, [id]);
       connection.release();
       return result.rows[0];
