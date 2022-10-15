@@ -1,7 +1,7 @@
 type Order = {
   id?: string;
   order_name?: string;
-  price?: string;
+  price?: number;
   order_status?: string;
   user_id?: string;
 };

@@ -13,7 +13,7 @@ const handelUnauthorizedError = (next: NextFunction) => {
   next(error);
 };
 
-const validationMW = (req: Request, _res: Response, next: NextFunction) => {
+const AuthenticationMW = (req: Request, _res: Response, next: NextFunction) => {
   try {
     const authHeader = req.get("Authorization");
     // No token provided
@@ -46,4 +46,4 @@ const validationMW = (req: Request, _res: Response, next: NextFunction) => {
   }
 };
 
-export default validationMW;
+export default AuthenticationMW;

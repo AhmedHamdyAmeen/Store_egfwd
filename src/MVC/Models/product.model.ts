@@ -7,7 +7,7 @@ class ProductModel {
   // Get Products
   async getAllProducts(): Promise<Product[]> {
     try {
-      const sql = `SELECT * FORM products`;
+      const sql = `SELECT * FROM products`;
       const result = await queryingDB(sql);
       return result.rows;
     } catch (error) {
@@ -20,7 +20,7 @@ class ProductModel {
   // Get Specific Product
   async getProduct(id: string): Promise<Product[]> {
     try {
-      const sql = `SELECT * FORM products WHERE id=($1)`;
+      const sql = `SELECT * FROM products WHERE id=($1)`;
       const result = await queryingDB(sql, [id]);
       return result.rows;
     } catch (error) {
@@ -31,7 +31,7 @@ class ProductModel {
   }
 
   // Create Product
-  async create(p: Product): Promise<Product> {
+  async createProduct(p: Product): Promise<Product> {
     try {
       const sql = `INSERT INTO Products
                   (product_name, product_price, product_description)
@@ -52,7 +52,7 @@ class ProductModel {
   }
 
   // Update Product
-  async update(p: Product): Promise<Product> {
+  async updateProduct(p: Product): Promise<Product> {
     try {
       const sql = `UPDATE products
                   SET product_name=$1, product_price=$2, product_description=$3
@@ -75,7 +75,7 @@ class ProductModel {
   }
 
   // Remove Product
-  async delete(id: string): Promise<Product> {
+  async deleteProduct(id: string): Promise<Product> {
     try {
       const sql = `DELETE FROM products WHERE id=$1 RETURNING *`;
       const result = await queryingDB(sql, [id]);

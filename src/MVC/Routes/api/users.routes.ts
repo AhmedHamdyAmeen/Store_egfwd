@@ -1,7 +1,9 @@
 import { Router } from "express";
 
-import validationMW from "../../Middleware/auth/authenticationMW";
+import AuthenticationMW from "../../Middleware/auth/authenticationMW";
 
+/** User Controllers:
+ */
 import {
   createUser,
   getMany,
@@ -11,15 +13,17 @@ import {
   authenticate,
 } from "../../Controllers/users.controllers";
 
+/** ----------------------- **
+ * Test DB Connection
+ * ! User Routes
+ */
 const users_route = Router();
 
-/** Test DB Connection
- */
 users_route
   .route("/db")
   .post(createUser)
-  .get(validationMW, getMany)
-  .patch(validationMW, updateOne);
+  .get(AuthenticationMW, getMany)
+  .patch(AuthenticationMW, updateOne);
 
 users_route.route("/db/:id").get(getOne).delete(deleteOne);
 

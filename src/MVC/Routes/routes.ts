@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
 
-
 import users_route from "./api/users.routes";
+import orders_route from "./api/orders.routes";
+import products_route from "./api/products.routes";
 
 const routes = Router();
 
@@ -15,8 +16,8 @@ routes.get("/", (_req: Request, res: Response) => {
 `);
 });
 
-
-
 routes.use(users_route);
+routes.use(products_route);
+routes.use(orders_route);
 
 export default routes;

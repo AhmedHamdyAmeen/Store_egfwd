@@ -46,7 +46,7 @@ class OrderModel {
       return result.rows[0];
     } catch (error) {
       throw new Error(
-        `Unable to create order: (${o.id}), ${(error as Error).message} `
+        `Unable to create order: ${o.order_name}, ${(error as Error).message} `
       );
     }
   }
@@ -115,12 +115,12 @@ class OrderModel {
   async updateOrderProduct(
     quantity: string,
     product_id: string,
-    order_id: string
-    //old_product_id,
-    //old_order_id
+    order_id: string,
+    old_product_id: string,
+    old_order_id: string
   ): Promise<Order> {
     try {
-      const sql = `UPDATE TABLE  order_products
+      const sql = `UPDATE order_products
                   SET quantity=$1, product_id=$2, order_id=$3
                   WHERE product_id=($4) AND order_id=($5)
                   RETURNING *`;
@@ -128,8 +128,8 @@ class OrderModel {
         quantity,
         product_id,
         order_id,
-        //old_product_id,
-        //old_order_id
+        old_product_id,
+        old_order_id,
       ]);
 
       return result.rows[0];
@@ -148,8 +148,8 @@ class OrderModel {
     order_id: string
   ): Promise<Order> {
     try {
-      const sql = `DELETE FORM order_products
-                  WHERE product_id=$1 AND order_id=$2`;
+      const sql = `DELETE FROM order_products
+                  WHERE product_id=$1 AND order_id=$2 RETURNING *`;
       const result = await queryingDB(sql, [product_id, order_id]);
 
       return result.rows[0];
