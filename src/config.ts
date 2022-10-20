@@ -16,7 +16,7 @@ const {
   JWT_SECRET_TOKEN,
 } = process.env;
 
-/** Select the appropriate DB base on the type NODE_ENV
+/** Select the appropriate DB base on the type NODE_ENV:
  */
 
 const DATABASE = NODE_ENV === "dev" ? POSTGRES_DB : POSTGRES_DB_test;

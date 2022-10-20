@@ -26,9 +26,13 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getMany = async (_req: Request, res: Response, next: NextFunction) => {
+const getAllUsers = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const users = await userModel.getMany();
+    const users = await userModel.getAllUsers();
 
     res
       .status(200)
@@ -38,9 +42,9 @@ const getMany = async (_req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getOne = async (req: Request, res: Response, next: NextFunction) => {
+const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userModel.getOne(req.params.id as unknown as string);
+    const user = await userModel.getUser(req.params.id as unknown as string);
     res
       .status(200)
       .json({ msg: "User retrieved Successfully", data: { ...user } });
@@ -49,9 +53,9 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const updateOne = async (req: Request, res: Response, next: NextFunction) => {
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userModel.updateOne(req.body);
+    const user = await userModel.updateUser(req.body);
     res
       .status(200)
       .json({ msg: "User updated Successfully", data: { ...user } });
@@ -60,9 +64,9 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userModel.deleteOne(req.params.id as unknown as string);
+    const user = await userModel.deleteUser(req.params.id as unknown as string);
     res
       .status(200)
       .json({ msg: "User Deleted Successfully", data: { ...user } });
@@ -102,4 +106,11 @@ const authenticate = async (
   }
 };
 
-export { createUser, getMany, getOne, updateOne, deleteOne, authenticate };
+export {
+  createUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  authenticate,
+};

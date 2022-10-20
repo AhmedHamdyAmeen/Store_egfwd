@@ -6,27 +6,25 @@ import AuthenticationMW from "../../Middleware/auth/authenticationMW";
  */
 import {
   createUser,
-  getMany,
-  getOne,
-  updateOne,
-  deleteOne,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
   authenticate,
 } from "../../Controllers/users.controllers";
 
 /** ----------------------- **
- * Test DB Connection
- * ! User Routes
+ * User Routes
  */
 const users_route = Router();
 
 users_route
-  .route("/db")
+  .route("/user")
   .post(createUser)
-  .get(AuthenticationMW, getMany)
-  .patch(AuthenticationMW, updateOne);
+  .get(AuthenticationMW, getAllUsers)
+  .patch(AuthenticationMW, updateUser);
 
-users_route.route("/db/:id").get(getOne).delete(deleteOne);
+users_route.route("/user/authenticate").post(authenticate);
 
-users_route.route("/authenticate").post(authenticate);
-
+users_route.route("/user/:id").get(getUser).delete(deleteUser);
 export default users_route;

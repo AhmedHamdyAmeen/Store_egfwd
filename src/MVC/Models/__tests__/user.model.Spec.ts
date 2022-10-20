@@ -1,38 +1,40 @@
 import UserModel from "./../user.model";
-import db from "../../../database/database";
 import User from "../../../types/user.types";
+import db from "../../../database/database";
 
+/** Instantiate instance from UserModel Class
+ */
 const userModel = new UserModel();
 
 describe("- Test User Model: ", () => {
   // ^ Check if the method defined or not
   describe("* Test Method existence: ", () => {
-    it("-- Should have an getMany users method", () => {
-      expect(userModel.getMany).toBeDefined();
+    it("-- Should have an getAllUsers method", () => {
+      expect(userModel.getAllUsers).toBeDefined();
     });
 
-    it("-- Should have an getOne users method", () => {
-      expect(userModel.getOne).toBeDefined();
+    it("-- Should have a getUser method", () => {
+      expect(userModel.getUser).toBeDefined();
     });
 
-    it("-- Should have an crete users method", () => {
+    it("-- Should have a creteUser method", () => {
       expect(userModel.create).toBeDefined();
     });
 
-    it("-- Should have an updateOne users method", () => {
-      expect(userModel.updateOne).toBeDefined();
+    it("-- Should have an updateUser users method", () => {
+      expect(userModel.updateUser).toBeDefined();
     });
 
-    it("-- Should have an deleteOne users method", () => {
-      expect(userModel.deleteOne).toBeDefined();
+    it("-- Should have a deleteUser users method", () => {
+      expect(userModel.deleteUser).toBeDefined();
     });
 
-    it("Should have an Authenticate user method", () => {
+    it("-- Should have an Authenticate user method", () => {
       expect(userModel.authenticate).toBeDefined();
     });
   });
 
-  describe("* Test user Model logic", () => {
+  describe("* Test userModel logic: ", () => {
     /** --------- **
      * Preliminary steps:-
      */
@@ -47,14 +49,18 @@ describe("- Test User Model: ", () => {
     //^ Create Test user
     beforeAll(async () => {
       const createdUser = await userModel.create(user);
-      user.id = createdUser.id;
-      // user.id = "b09f6216-f361-404c-8ab9-731ae70d7703";
+      // the db users uuid, so we need to rest it.
+
+      const fetchedUsers = await userModel.getAllUsers();
+      user.id = fetchedUsers[0].id;
     });
 
     //^ Delete the db table after the test done
     afterAll(async () => {
       const conn = await db.connect();
-      // if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+      /** If you aren't use uuid ==> you need to alter the id sequence..
+       * add: `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+       */
       const sql = `DELETE FROM users;`;
       await conn.query(sql);
       conn.release();
@@ -63,35 +69,34 @@ describe("- Test User Model: ", () => {
     /** --------- **
      * Test Cases:
      */
-    it("Create method should return a New User", async () => {
+    it("-- CreateUser method should returns a New User", async () => {
       const createdUser = await userModel.create({
-        email: "test2@test.com",
-        user_name: "test2User",
-        first_name: "Test",
-        last_name: "User",
-        password: "test1234",
+        email: "Ahmed2@test.com",
+        user_name: "Ahmed2Ameen",
+        first_name: "Ahmed",
+        last_name: "Ameen",
+        password: "test@1234",
       });
 
-      // expect(createdUser).toEqual({ ...user, id: createdUser.id });
       expect(createdUser).toEqual({
-        email: "test2@test.com",
-        user_name: "test2User",
-        first_name: "Test",
-        last_name: "User",
+        email: "Ahmed2@test.com",
+        user_name: "Ahmed2Ameen",
+        first_name: "Ahmed",
+        last_name: "Ameen",
       });
     });
 
-    it("GetMany method should return All available users in dB: ", async () => {
-      const returnedUsers = await userModel.getOne(user.id as string);
+    it("-- GetAllUsers method should return All available users in dB.", async () => {
+      const returnedUsers = await userModel.getUser(user.id as string);
       // expect(returnedUsers.id).toBe(user.id);
-      // expect(returnedUsers.email).toBe(user.email);
-      // expect(returnedUsers.user_name).toBe(user.user_name);
-      // expect(returnedUsers.first_name).toBe(user.first_name);
-      // expect(returnedUsers.last_name).toBe(user.last_name);
+      expect(returnedUsers.email).toBe(user.email);
+      expect(returnedUsers.user_name).toBe(user.user_name);
+      expect(returnedUsers.first_name).toBe(user.first_name);
+      expect(returnedUsers.last_name).toBe(user.last_name);
     });
 
-    it("UpdateOne method should return a user with edited attributes", async () => {
-      const updatedUser = await userModel.updateOne({
+    it("-- UpdateUser method should return a user with edited attributes.", async () => {
+      const updatedUser = await userModel.updateUser({
         ...user,
         user_name: "Ahmed Hamdy",
         first_name: "Ahmed",
@@ -99,16 +104,16 @@ describe("- Test User Model: ", () => {
       });
 
       // expect(updatedUser.id).toBe(user.id);
-      // expect(updatedUser.email).toBe(user.email);
-      // expect(updatedUser.user_name).toBe(user.user_name);
-      // expect(updatedUser.first_name).toBe(user.first_name);
-      // expect(updatedUser.last_name).toBe(user.last_name);
+      expect(updatedUser.email).toBe(user.email);
+      expect(updatedUser.user_name).toBe("Ahmed Hamdy");
+      expect(updatedUser.first_name).toBe("Ahmed");
+      expect(updatedUser.last_name).toBe("Hamdy");
     });
 
-    it("DeleteOne method should delete user from DB", async () => {
-      const deletedUser = await userModel.deleteOne(user.id as string);
+    it("-- DeleteUser method should delete user from DB", async () => {
+      const deletedUser = await userModel.deleteUser(user.id as string);
 
-      expect(deletedUser.id).toBe(user.id);
+      expect(deletedUser.id).toEqual(deletedUser.id);
     });
   });
 });

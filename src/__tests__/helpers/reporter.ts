@@ -1,3 +1,6 @@
+/** This Pice of code form the Documentation..
+ *  Reporter: to optimize logging the "test suits" in console
+ */
 import {
   DisplayProcessor,
   SpecReporter,

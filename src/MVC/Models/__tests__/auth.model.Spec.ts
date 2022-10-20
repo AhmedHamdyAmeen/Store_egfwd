@@ -13,7 +13,7 @@ describe("- Authentication Model:- ", () => {
   // Test Cases:-
 
   describe("* Test method existence: ", () => {
-    it("Should have an Authenticate user method", () => {
+    it("-- Should have an Authenticate user method", () => {
       expect(userModel.authenticate).toBeDefined();
     });
   });
@@ -24,22 +24,26 @@ describe("- Authentication Model:- ", () => {
      */
     const user = {
       email: "test@test.com",
-      user_name: "testUser",
-      first_name: "Test",
-      last_name: "User",
-      password: "test1234",
+      user_name: "Ahmed Hamdy Ameen",
+      first_name: "Ahmed",
+      last_name: "Ameen",
+      password: "a@test.com",
     } as User;
 
     //^ Create Test user
     beforeAll(async () => {
       const createdUser = await userModel.create(user);
-      user.id = createdUser.id;
+
+      const fetchedUsers = await userModel.getAllUsers();
+      user.id = fetchedUsers[0].id;
     });
 
     //^ Delete the db table after the test done
     afterAll(async () => {
       const conn = await db.connect();
-      // if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+      /** If you aren't use uuid ==> you need to alter the id sequence..
+       * add: `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+       */
       const sql = `DELETE FROM users;`;
       await conn.query(sql);
       conn.release();
@@ -48,7 +52,7 @@ describe("- Authentication Model:- ", () => {
     /** --------- **
      * Test Cases:
      */
-    it("Authenticate Method should return the authenticated user", async () => {
+    it("-- Authenticate Method should return the authenticated user.", async () => {
       const authenticatedUser = await userModel.authenticate(
         user.email as string,
         user.password as string
@@ -59,7 +63,7 @@ describe("- Authentication Model:- ", () => {
       expect(authenticatedUser?.last_name).toBe(user.last_name);
     });
 
-    it("Authenticate Method Should return null for wrong credentials", async () => {
+    it("-- Authenticate Method Should return null for wrong credentials.", async () => {
       const authenticatedUser = await userModel.authenticate(
         "a@ameen.com",
         "fake_password"

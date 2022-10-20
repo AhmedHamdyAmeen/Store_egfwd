@@ -8,6 +8,9 @@ import {
   DATABASE,
 } from "../config";
 
+/** Create db Pool:-
+ */
+
 const pool = new Pool({
   host: POSTGRES_HOST,
   database: DATABASE,
@@ -16,7 +19,7 @@ const pool = new Pool({
   port: parseInt(POSTGRES_PORT as string, 10),
 });
 
-/** Listen on the Error
+/** Listen on the Error:
  */
 pool.on("error", (err: Error) => {
   console.log(err.message);
