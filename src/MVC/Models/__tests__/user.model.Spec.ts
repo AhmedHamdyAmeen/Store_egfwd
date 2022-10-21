@@ -49,7 +49,6 @@ describe("- Test User Model: ", () => {
     //^ Create Test user
     beforeAll(async () => {
       const createdUser = await userModel.create(user);
-      // the db users uuid, so we need to rest it.
 
       const fetchedUsers = await userModel.getAllUsers();
       user.id = fetchedUsers[0].id;
@@ -86,7 +85,7 @@ describe("- Test User Model: ", () => {
       });
     });
 
-    it("-- GetAllUsers method should return All available users in dB.", async () => {
+    it("-- GetAllUsers method should returns All available users in dB.", async () => {
       const returnedUsers = await userModel.getUser(user.id as string);
       // expect(returnedUsers.id).toBe(user.id);
       expect(returnedUsers.email).toBe(user.email);
@@ -95,7 +94,7 @@ describe("- Test User Model: ", () => {
       expect(returnedUsers.last_name).toBe(user.last_name);
     });
 
-    it("-- UpdateUser method should return a user with edited attributes.", async () => {
+    it("-- UpdateUser method should return the updated User.", async () => {
       const updatedUser = await userModel.updateUser({
         ...user,
         user_name: "Ahmed Hamdy",
