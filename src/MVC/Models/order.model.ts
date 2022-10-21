@@ -3,6 +3,7 @@ import Order from "../../types/order.types";
 import Error from "./../Interfaces/error";
 
 import queryingDB from "../Middleware/db/queryingDB";
+import Order_product from "./../../types/order_product.types";
 
 class OrderModel {
   // Get Orders
@@ -91,10 +92,10 @@ class OrderModel {
 
   // Add Order_product
   async addOrderProduct(
-    quantity: string,
+    quantity: number,
     product_id: string,
     order_id: string
-  ): Promise<Order> {
+  ): Promise<Order_product> {
     try {
       const sql = `INSERT INTO order_products 
                   (quantity, product_id, order_id) 
@@ -118,7 +119,7 @@ class OrderModel {
     order_id: string,
     old_product_id: string,
     old_order_id: string
-  ): Promise<Order> {
+  ): Promise<Order_product> {
     try {
       const sql = `UPDATE order_products
                   SET quantity=$1, product_id=$2, order_id=$3
@@ -146,7 +147,7 @@ class OrderModel {
   async removeOrderProduct(
     product_id: string,
     order_id: string
-  ): Promise<Order> {
+  ): Promise<Order_product> {
     try {
       const sql = `DELETE FROM order_products
                   WHERE product_id=$1 AND order_id=$2 RETURNING *`;
