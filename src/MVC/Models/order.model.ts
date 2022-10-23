@@ -90,6 +90,20 @@ class OrderModel {
     }
   }
 
+  // get All Order_products
+  async getAllOrderProducts(): Promise<Order_product[]> {
+    try {
+      const sql = `SELECT * FROM order_products`;
+      const result = await queryingDB(sql);
+
+      return result.rows;
+    } catch (error) {
+      throw new Error(
+        `Couldn't Retrieve OrderProducts, ${(error as Error).message}`
+      );
+    }
+  }
+
   // Add Order_product
   async addOrderProduct(
     quantity: number,

@@ -22,20 +22,20 @@ describe("- Authentication Model:- ", () => {
     /** --------- **
      * Preliminary steps:-
      */
-    const user = {
-      email: "test@test.com",
-      user_name: "Ahmed Hamdy Ameen",
+    const user: User = {
+      email: "AA@test.com",
+      user_name: "Ahmed Ameen",
       first_name: "Ahmed",
       last_name: "Ameen",
       password: "a@test.com",
-    } as User;
+    };
 
     //^ Create Test user
     beforeAll(async () => {
       const createdUser = await userModel.create(user);
 
-      const fetchedUsers = await userModel.getAllUsers();
-      user.id = fetchedUsers[0].id;
+      const retrievedUser = await userModel.getAllUsers();
+      user.id = retrievedUser[0].id;
     });
 
     //^ Delete the db table after the test done

@@ -77,6 +77,13 @@ describe("- Test Product Model: ", () => {
        */
       const sql = `DELETE FROM orders;`;
       await conn.query(sql);
+
+      const sql2 = `DELETE FROM users;`;
+      await conn.query(sql2);
+
+      const sql3 = `DELETE FROM products;`;
+      await conn.query(sql3);
+
       conn.release();
     });
 
@@ -93,7 +100,8 @@ describe("- Test Product Model: ", () => {
 
       const createdProduct = await productModel.createProduct(product);
 
-      expect(createdProduct).toEqual({ ...product });
+      // expect(createdProduct).toEqual({ ...product, id: product.id });
+      expect(createdProduct.product_name).toEqual(product.product_name);
     });
 
     it("-- GetAllProducts method should returns all available Products in db.", async () => {
@@ -113,11 +121,16 @@ describe("- Test Product Model: ", () => {
         product_description: "Good Description",
       };
 
-      const updatedOrder = await productModel.updateProduct(uProduct);
+      const updatedOrder = await productModel.updateProduct({
+        ...uProduct,
+        id: product.id,
+      });
 
-      expect(updatedOrder.product_name).toBe(uProduct.product_name);
-      expect(updatedOrder.product_price).toBe(uProduct.product_price);
-      expect(updatedOrder.product_description).toBe(
+      expect(updatedOrder?.product_name).toBe(uProduct.product_name);
+      expect(updatedOrder?.product_price).toBe(
+        uProduct.product_price?.toFixed(2) as unknown as number
+      );
+      expect(updatedOrder?.product_description).toBe(
         uProduct.product_description
       );
     });
