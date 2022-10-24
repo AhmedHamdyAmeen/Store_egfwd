@@ -17,15 +17,15 @@ const productModel = new ProductModel();
 const request = supertest(app);
 let token = "";
 
-describe("* Order API Endpoints", () => {
+describe("* Product API Endpoints", () => {
   /** --------- **
    * Preliminary steps:-
    */
   const user = {
-    email: "Sa@test.com",
-    user_name: "Saad Salam",
-    first_name: "Saad",
-    last_name: "Salam",
+    email: "ZO@test.com",
+    user_name: "Zienab Osama",
+    first_name: "Zienab",
+    last_name: "Osama",
     password: "test1234",
   } as User;
 
@@ -39,7 +39,6 @@ describe("* Order API Endpoints", () => {
   beforeAll(async () => {
     // & Create user to test userModel methods
     const createdUser = await userModel.create(user);
-
     const fetchedUsers = await userModel.getAllUsers();
     user.id = fetchedUsers[0].id;
 
@@ -48,26 +47,40 @@ describe("* Order API Endpoints", () => {
       .post("/api/user/authenticate")
       .set("Content-Type", "application/json")
       .send({
-        email: "Sa@test.com",
+        email: "ZO@test.com",
         password: "test1234",
       });
-    const { token: userToken } = res.body;
 
-    // & Insert the token to the user object
+    const { token: userToken } = res.body;
+    // Insert the token to the user object
     token = userToken;
 
     // & Create Product
     const createdProduct = await productModel.createProduct(product);
     const retrievedProduct = await productModel.getAllProducts();
     product.id = retrievedProduct[0].id;
+
+    // console.log("CreatedUser: ", createdUser);
+    // console.log("createdProduct: ", createdProduct);
+    // console.log(token);
   });
 
   //^ Delete the db table after the test done
   afterAll(async () => {
     const conn = await db.connect();
-    // if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
-    const sql = `DELETE FROM users;`;
+    /** if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+     */
+
+    const sql = `DELETE FROM order_products`;
+    const sql2 = `DELETE FROM products`;
+    const sql3 = `DELETE FROM orders`;
+    const sql4 = `DELETE FROM users`;
+
     await conn.query(sql);
+    await conn.query(sql2);
+    await conn.query(sql3);
+    await conn.query(sql4);
+
     conn.release();
   });
 
@@ -87,14 +100,14 @@ describe("* Order API Endpoints", () => {
         .post("/api/product")
         .set("Content-Type", "application/json")
         .set("Authorization", `Bearer ${token}`)
-        .send({ ...product });
+        .send(product);
 
       expect(res.status).toBe(200);
 
       const { product_name, product_price, product_description } =
         res.body.data;
       expect(product_name).toBe(product.product_name);
-      expect(product_price).toBe(product.product_price);
+      expect(product_price).toBe(product.product_price?.toFixed(2));
       expect(product_description).toBe(product.product_description);
     });
 
@@ -105,8 +118,10 @@ describe("* Order API Endpoints", () => {
         .set("Authorization", `Bearer ${token}`);
 
       expect(res.status).toBe(200);
-      expect(res.body.data.product_name).toBe(product.product_name);
-      expect(res.body.data.product_price).toBe(product.product_price);
+      expect(res.body.data[0].product_name).toBe(product.product_name);
+      expect(res.body.data[0].product_price).toBe(
+        product.product_price?.toFixed(2)
+      );
     });
 
     it("-- Should get list of All Products", async () => {
@@ -119,14 +134,16 @@ describe("* Order API Endpoints", () => {
     });
 
     it("-- Should Update Product info", async () => {
+      // console.log("=============>> ", product);
+
       const res = await request
-        .patch(`/api/product`)
+        .put(`/api/product`)
         .set("Content-Type", "application/json")
         .set("Authorization", `Bearer ${token}`)
         .send({
+          ...product,
           product_name: "Gaming Keyboard 20",
-          product_price: 499,
-          product_description: "Good Description",
+          product_price: 600,
         });
 
       expect(res.status).toBe(200);
@@ -135,7 +152,7 @@ describe("* Order API Endpoints", () => {
       const { product_name, product_price, product_description } =
         res.body.data;
       expect(product_name).toBe("Gaming Keyboard 20");
-      expect(product_price).toBe(499);
+      expect(product_price).toBe((600 as number).toFixed(2));
       expect(product_description).toBe("Good Description");
     });
 

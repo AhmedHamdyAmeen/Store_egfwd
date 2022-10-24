@@ -54,9 +54,19 @@ describe("* User API Endpoints", () => {
   //^ Delete the db table after the test done
   afterAll(async () => {
     const conn = await db.connect();
-    // if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
-    const sql = `DELETE FROM users;`;
+    /** if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+     */
+
+    const sql = `DELETE FROM order_products`;
+    const sql2 = `DELETE FROM products`;
+    const sql3 = `DELETE FROM orders`;
+    const sql4 = `DELETE FROM users`;
+
     await conn.query(sql);
+    await conn.query(sql2);
+    await conn.query(sql3);
+    await conn.query(sql4);
+
     conn.release();
   });
 
@@ -154,7 +164,7 @@ describe("* User API Endpoints", () => {
         });
 
       expect(res.status).toBe(200);
-      console.log("===========> ", res.body.data);
+      // console.log("===========> ", res.body.data);
 
       const { email, user_name, first_name, last_name } = res.body.data;
       expect(email).toBe(user.email);

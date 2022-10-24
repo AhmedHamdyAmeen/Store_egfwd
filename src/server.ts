@@ -32,20 +32,6 @@ const limiter = rateLimit({
   message: "Too many request to this IP, please try again after 1 minute! 😥🤷‍♀️",
 });
 
-// Test DB
-// db.connect().then((client) => {
-//   return client
-//     .query("SELECT NOW()")
-//     .then((res) => {
-//       client.release();
-//       console.log(res.rows);
-//     })
-//     .catch((err) => {
-//       client.release();
-//       console.log(err.stack);
-//     });
-// });
-
 /**-----------------------**
  *  Endpoints
  */
@@ -55,7 +41,7 @@ app.use(express.json()); // parses incoming requests with JSON payloads
 // app.use(express.urlencoded({ extended: false }));
 
 // Use to limit repeated requests to public APIs and/or endpoints
-app.use(limiter);
+// app.use(limiter);
 app.use(helmet()); // to Securing http requests
 app.use(morgan("dev"));
 app.use(cors());

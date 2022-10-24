@@ -49,9 +49,12 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = await productModel.getProduct(req.params.id as string);
 
+    if (!product.length)
+      throw new Error(`Product: ${req.params.id} not found!`);
+
     res.status(200).json({
       msg: `Product: (${req.params.id as string}) Retrieved Successfully`,
-      data: { ...product },
+      data: product,
     });
   } catch (error) {
     next(error);
@@ -66,7 +69,7 @@ const updateProduct = async (
   try {
     const updatedProduct = await productModel.updateProduct({ ...req.body });
 
-    console.log("updatedProduct", updatedProduct);
+    // console.log("updatedProduct", updatedProduct);
 
     if (!updatedProduct)
       throw new Error(

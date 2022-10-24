@@ -60,16 +60,14 @@ describe("- Test User Model: ", () => {
       /** If you aren't use uuid ==> you need to alter the id sequence..
        * add: `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
        */
-      const sql = `DELETE FROM users`;
+      const sql = `DELETE FROM order_products`;
+      const sql2 = `DELETE FROM products`;
+      const sql3 = `DELETE FROM orders`;
+      const sql4 = `DELETE FROM users`;
+
       await conn.query(sql);
-
-      const sql2 = `DELETE FROM users`;
       await conn.query(sql2);
-
-      const sql3 = `DELETE FROM products`;
       await conn.query(sql3);
-
-      const sql4 = `DELETE FROM order_products`;
       await conn.query(sql4);
 
       conn.release();

@@ -40,16 +40,17 @@ describe("* Order API Endpoints", () => {
   beforeAll(async () => {
     // & Create user to test userModel methods
     const createdUser = await userModel.create(user);
-
     const fetchedUsers = await userModel.getAllUsers();
     user.id = fetchedUsers[0].id;
+
+    // console.log("createdUser: ==>", createdUser);
 
     // & Sign in to get access token:
     const res = await request
       .post("/api/user/authenticate")
       .set("Content-Type", "application/json")
       .send({
-        email: "Ya@test.com",
+        email: "Sa@test.com",
         password: "test1234",
       });
 
@@ -67,9 +68,19 @@ describe("* Order API Endpoints", () => {
   //^ Delete the db table after the test done
   afterAll(async () => {
     const conn = await db.connect();
-    // if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
-    const sql = `DELETE FROM users;`;
+    /** if you aren't use uuid u need to add `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
+     */
+
+    const sql = `DELETE FROM order_products`;
+    const sql2 = `DELETE FROM products`;
+    const sql3 = `DELETE FROM orders`;
+    const sql4 = `DELETE FROM users`;
+
     await conn.query(sql);
+    await conn.query(sql2);
+    await conn.query(sql3);
+    await conn.query(sql4);
+
     conn.release();
   });
 
@@ -97,7 +108,7 @@ describe("* Order API Endpoints", () => {
 
       const { order_name, price, order_status, user_id } = res.body.data;
       expect(order_name).toBe(order.order_name);
-      expect(price).toBe(order.price);
+      expect(price).toBe(order.price?.toFixed(2));
       expect(order_status).toBe(order.order_status);
       expect(user_id).toBe(order.user_id);
     });
@@ -110,7 +121,7 @@ describe("* Order API Endpoints", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.data.order_name).toBe(order.order_name);
-      expect(res.body.data.price).toBe(order.price);
+      expect(res.body.data.price).toBe(order.price?.toFixed(2));
     });
 
     it("-- Should get list of All Order", async () => {
@@ -123,8 +134,12 @@ describe("* Order API Endpoints", () => {
     });
 
     it("-- Should Update Order info", async () => {
+      // console.log("===========> order.id: ", order.id);
+      // console.log("===========> user.id: ", user.id);
+      // console.log(token);
+
       const res = await request
-        .patch(`/api/order`)
+        .put(`/api/order`)
         .set("Content-Type", "application/json")
         .set("Authorization", `Bearer ${token}`)
         .send({
@@ -134,11 +149,11 @@ describe("* Order API Endpoints", () => {
         });
 
       expect(res.status).toBe(200);
-      // console.log("===========> ", res.body.data);
+      // console.log("===========> res.body:  ", res.body);
 
-      const { order_name, price, order_status, user_id } = res.body.data;
+      const { order_name, price, order_status } = res.body.data;
       expect(order_name).toBe("Gaming Monitor");
-      expect(price).toBe(745);
+      expect(price).toBe((745.0 as number).toFixed(2));
       expect(order_status).toBe("active");
     });
 

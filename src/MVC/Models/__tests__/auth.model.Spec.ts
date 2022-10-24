@@ -44,7 +44,7 @@ describe("- Authentication Model:- ", () => {
       /** If you aren't use uuid ==> you need to alter the id sequence..
        * add: `\nALTER SEQUENCE users_id_seq RESTART WITH 1;`
        */
-      const sql = `DELETE FROM users;`;
+      const sql = `DELETE FROM users`;
       await conn.query(sql);
       conn.release();
     });
