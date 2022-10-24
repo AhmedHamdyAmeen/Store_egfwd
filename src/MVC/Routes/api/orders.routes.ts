@@ -25,7 +25,7 @@ const orders_route = Router();
 orders_route
   .route("/order")
   .get(getAllOrders)
-  .post(createOrder)
+  .post(AuthenticationMW, createOrder)
   .put(AuthenticationMW, updateOrder);
 
 orders_route

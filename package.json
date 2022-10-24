@@ -17,6 +17,7 @@
     "test:mac": "export NODE_ENV=test&& db-migrate reset && tsc && db-migrate --env test up && tsc && jasmine && db-migrate reset",
     "test:windows": "set NODE_ENV=test&& db-migrate reset && tsc && db-migrate --env test up && tsc && jasmine && db-migrate reset",
     "migration:run": "db-migrate up",
+    "migration:down": "db-migrate down",
     "migration:create": "npx db-migrate create tableName --sql-file",
     "migration:reset": "db-migrate reset"
   },

@@ -16,7 +16,8 @@ const handelUnauthorizedError = (next: NextFunction) => {
 const AuthenticationMW = (req: Request, _res: Response, next: NextFunction) => {
   try {
     const authHeader = req.get("Authorization");
-    // No token provided
+    /** No token provided
+     */
     if (!authHeader) handelUnauthorizedError(next);
 
     /** Check if the token is bearer type or not
@@ -35,10 +36,13 @@ const AuthenticationMW = (req: Request, _res: Response, next: NextFunction) => {
       if (decodedToken) {
         next();
       } else {
-        // Failed to authenticate user
+        /** Failed to authenticate user
+         */
+        handelUnauthorizedError(next);
       }
     } else {
-      // token type not bearer
+      /** token type not bearer
+       */
       handelUnauthorizedError(next);
     }
   } catch (error) {

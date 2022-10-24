@@ -26,5 +26,8 @@ users_route
 
 users_route.route("/user/authenticate").post(authenticate);
 
-users_route.route("/user/:id").get(getUser).delete(deleteUser);
+users_route
+  .route("/user/:id")
+  .get(AuthenticationMW, getUser)
+  .delete(AuthenticationMW, deleteUser);
 export default users_route;
